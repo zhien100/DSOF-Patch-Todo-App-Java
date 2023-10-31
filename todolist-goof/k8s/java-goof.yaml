@@ -20,6 +20,19 @@ spec:
       - image: ${DOCKER_ACCOUNT}/java-goof:latest
         imagePullPolicy: Always
         name: java-goof
+        livenessProbe:
+        securityContext:
+          runAsUser: 10000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+        resources:
+          limits: 
+           cpu:
+           memory:
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -29,6 +42,7 @@ metadata:
     app: goof
   name: goof
 spec:
+  loadBalancerSourceRanges:
   type: LoadBalancer
   ports:
     - port: 80
