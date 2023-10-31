@@ -4063,7 +4063,7 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/os: linux
-      hostNetwork: true
+      hostNetwork: false
       tolerations:
         # Make sure calico-node gets scheduled on all nodes.
         - effect: NoSchedule
@@ -4106,7 +4106,7 @@ spec:
             - mountPath: /host/opt/cni/bin
               name: cni-bin-dir
           securityContext:
-            privileged: true
+            privileged: false
         # This container installs the CNI binaries
         # and CNI network config file on each node.
         - name: install-cni
@@ -4146,8 +4146,6 @@ spec:
               name: cni-bin-dir
             - mountPath: /host/etc/cni/net.d
               name: cni-net-dir
-          securityContext:
-            privileged: true
         # Adds a Flex Volume Driver that creates a per-pod Unix Domain Socket to allow Dikastes
         # to communicate with Felix over the Policy Sync API.
         - name: flexvol-driver
@@ -4155,8 +4153,6 @@ spec:
           volumeMounts:
           - name: flexvol-driver-host
             mountPath: /host/driver
-          securityContext:
-            privileged: true
       containers:
         # Runs calico-node container on each Kubernetes node. This
         # container programs network policy and routes on each
@@ -4232,8 +4228,7 @@ spec:
               value: "false"
             - name: FELIX_HEALTHENABLED
               value: "true"
-          securityContext:
-            privileged: true
+
           resources:
             requests:
               cpu: 250m
