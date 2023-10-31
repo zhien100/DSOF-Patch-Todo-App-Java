@@ -38,6 +38,7 @@ import javax.validation.ConstraintViolation;
 import java.text.MessageFormat;
 import java.util.Set;
 
+import org.mindrot.jbcrypt.BCrypt;
 /**
  * Action class for Account CRUD operations.
  *
@@ -247,11 +248,13 @@ public class AccountAction extends BaseAction {
     }
 
     private boolean newPasswordDoesNotMatchConfirmationPassword() {
-        return !changePasswordForm.getNewPassword().equals(changePasswordForm.getConfirmationPassword());
+        boolean match = BCrypt.hashpw(changePasswordForm.getNewPassword(), BCrypt.gensalt(12)).equals(BCrypt.hashpw(changePasswordForm.getConfirmationPassword(), BCrypt.gensalt(12)));
+        return match;
     }
 
     private boolean incorrectCurrentPassword(User user) {
-        return !changePasswordForm.getCurrentPassword().equals(user.getPassword());
+        boolean match = BCrypt.hashpw(changePasswordForm.getCurrentPassword(), BCrypt.gensalt(12)).equals(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12)));
+        return match;
     }
 
     private void validateChangePasswordForm() {

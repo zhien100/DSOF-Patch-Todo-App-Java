@@ -93,7 +93,16 @@
             <version>1.13</version>
             <type>jar</type>
         </dependency>
+
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+
     </dependencies>
+
+    
 
     <build>
         <finalName>todolist</finalName>
